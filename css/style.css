@@ -1,0 +1,59 @@
+body {
+    background-image: -webkit-radial-gradient(#ddd 1px,transparent 0),-webkit-radial-gradient(#ddd 1px,transparent 0);
+    background-size: 50px 50px;
+}
+
+.container {
+    width: 80%;
+    margin: 0px auto;
+}
+
+.container h1 {
+    padding-top: 50px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.prompt-builder {
+    padding: 10px;
+    border-radius: 10px;
+    background: #fce2ae;
+    font-size: 20px;
+    color: #333333;
+    border: 1px solid #dec799;
+}
+
+.prompt-builder a {
+    color: #000033;
+    font-weight: bold;
+    text-decoration: underline;
+    text-decoration-style: dotted
+}
+
+.search-input {
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+}
+
+.search-input:focus, .search-input:active {
+    border-color: #40a9ff;
+    box-shadow: 0 0 0 2px rgb(24 144 255 / 20%);
+    border-right-width: 1px;
+    outline: 0;
+}
+
+.ready-prompt {
+    padding: 10px;
+    border-radius: 10px;
+    background: #f0f4f9;
+    color: #333333;
+}
+
+.ant-row {
+    margin-bottom: 7px;
+}
+
+.ant-dropdown-menu {
+    padding: 0;
+}
+
