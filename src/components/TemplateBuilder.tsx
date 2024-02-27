@@ -5,6 +5,7 @@ import { PromptBuilder } from "../components/PromptBuilder"
 import { PromptVariableAttribute, isPv, recordToPvAttr } from "../promptVariable"
 import { lex } from "../lexer"
 import * as state from "../state";
+import * as subs from "../subs";
 
 import ReactGrid, { Layout } from "react-grid-layout"
 import { atom, useAtom, useSetAtom, useAtomValue } from "jotai"
@@ -195,7 +196,7 @@ export function compilePrompt(template: any, values: Record<string, string | nul
 function BodySource() {
     let [templateSource, setTemplateSource] = useAtom(templateSourceAtom);
     let template = lex(templateSource);
-    let currentValues = state.useCurrentValues();
+    let currentValues = subs.useCurrentValues();
     let currentPrompt = compilePrompt(template, currentValues);
 
     return (
@@ -301,12 +302,12 @@ class InsertOption {toString() {return "&&insertOption&&"}}
 const insertOption = new InsertOption();
 const isInsertOption = (v: any) => (v instanceof InsertOption || (v.toString instanceof Function && v.toString() === "&&insertOption&&")); 
 
-type MenuOption = {
+type MenuOptionProps = {
     value?: string;
     options: Array<string>;
 }
 
-function EditInsertedOption(props: MenuOption) {
+function EditInsertedOption(props: MenuOptionProps) {
     let setVariableAttribute = useSetAtom(setVariableAttributeAtom);
     let [insertedOption, setInsertedOption] = useAtom(insertedOptionAtom);
     let existingOptions = new Set(props.options);
@@ -336,7 +337,7 @@ function EditInsertedOption(props: MenuOption) {
 
 }
 
-function MenuOption(props: MenuOption) {
+function MenuOption(props: MenuOptionProps) {
     let value = props.value;
     let deleteVariableOption = useSetAtom(deleteVariableOptionAtom);
 
@@ -354,9 +355,8 @@ function MenuOption(props: MenuOption) {
 }
 
 function BodySettings() {
-    let activeTab = useAtomValue(activeTabAtom);
     let [gridWidth, setGridWidth] = useState(350);
-    let [templateSource, setTemplateSource] = useAtom(templateSourceAtom);
+    let [templateSource] = useAtom(templateSourceAtom);
     let [selectedVariable, setSelectedVariable] = useAtom(selectedVariableAtom);
     let template = lex(templateSource);
     let variables = extractVariables(template);
