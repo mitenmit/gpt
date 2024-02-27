@@ -12,7 +12,9 @@ import * as icons from "./components/Icons"
 import { Menu } from "./components/Menu"
 import { PromptBuilder } from "./components/PromptBuilder"
 import { TemplateBuilder, setModalOpenAtom, compilePrompt } from "./components/TemplateBuilder"
+import * as events from "./events";
 import * as state from "./state";
+import * as subs from "./subs"
 import { WorkspaceMenuOptions, openFileHandleAtom, onWorkspaceMenuItemClick} from "./Workspace"
 
 
@@ -30,17 +32,18 @@ function DeleteTemplateModalBody () {
     <div>
       <strong>
         <div style={{color: "#777777"}}>Are you sure you want to delete the following template?</div>
-        <div style={{color: "#333333"}}>{state.useSelectedTemplateName()}</div>
+        <div style={{color: "#333333"}}>{subs.useSelectedTemplateName()}</div>
       </strong>
     </div>
   );
 }
 
 function TemplateList() {
-  let selectedTemplateName = state.useSelectedTemplateName()
-  let templateIndex = state.useTemplateIndex();
-  let templateOpts = state.useTemplateOptions();
-  let setTemplateIndex = useSetAtom(state.useAction("select_template"));
+  let selectedTemplateName = subs.useSelectedTemplateName()
+  let templateIndex = subs.useTemplateIndex();
+  let templateOpts = subs.useTemplateOptions();
+
+  let setTemplateIndex = useSetAtom(events.selectTemplateAtom);
 
   return (
     <Trigger  maskClosable={false}
@@ -56,8 +59,8 @@ function TemplateList() {
 
 function TemplateDelete() {
   let setModal = useSetAtom(useModal());
-  let templateId = state.useSelectedTemplateId();
-  let deleteTemplate = useSetAtom(state.useAction("delete_template"));
+  let templateId = subs.useSelectedTemplateId();
+  let deleteTemplate = useSetAtom(events.deleteTemplateAtom);  
 
   const deleteModal = () => {
     setModal({title: "Delete Template",
@@ -77,8 +80,8 @@ function TemplateDelete() {
 function TemplateSelector() {
   let setModalOpen = useSetAtom(setModalOpenAtom);
   
-  let templateCount = state.useTemplates().length;
-  let templateId = state.useSelectedTemplateId();
+  let templateCount = subs.useTemplates().length;
+  let templateId = subs.useSelectedTemplateId();
   
   
   return (
@@ -113,9 +116,9 @@ function ExampleNameModalBody() {
 }
 
 function ExamplesList() {
-  let loadExample = useSetAtom(state.useAction("load_example"));
-  let exampleId = state.useLoadedExampleId() || undefined;
-  let examples = state.useSelectedTemplateExampes();
+  let loadExample = useSetAtom(events.loadExampleAtom);
+  let exampleId = subs.useLoadedExampleId() || undefined;
+  let examples = subs.useSelectedTemplateExampes();
   let exampleOptions = examples.map( (e: any) => {return {key: e.id, label: e.name }} )
 
   return (
@@ -130,7 +133,7 @@ function ExamplesList() {
 
 function SetAsExample() {
   let setModal = useSetAtom(useModal());
-  let createExample = useSetAtom(state.useAction("create_example"));
+  let createExample = useSetAtom(events.createExampleAtom);
 
   const createExampleModal = () => {
     setModal({ title: "Create Example",
@@ -150,9 +153,9 @@ function SetAsExample() {
 }
 
 function UpdateExample() {
-  let loadedExampleId = state.useLoadedExampleId();
-  let isExampleModified = state.useIsExampleModified();
-  let updateExample = useSetAtom(state.useAction("update_example"));
+  let loadedExampleId = subs.useLoadedExampleId();
+  let isExampleModified = subs.useIsExampleModified();
+  let updateExample = useSetAtom(events.updateExampleAtom);
 
   return (
     isExampleModified ?
@@ -165,14 +168,14 @@ function UpdateExample() {
 }
 
 function ClearExample() {
-  let loadExample = useSetAtom(state.useAction("load_example"));
+  let loadExample = useSetAtom(events.loadExampleAtom);
   return (
     <a onClick = {() => loadExample(null)}><icons.CloseCircleIcon /> {" Clear"}</a> 
   );  
 }
 
 function DeleteExampleModalBody() {
-  let exampleName = state.useLoadedExampleName();
+  let exampleName = subs.useLoadedExampleName();
   return (
     <div>
       <strong>
@@ -184,8 +187,8 @@ function DeleteExampleModalBody() {
 }
 
 function DeleteExample() {
-  let loadedExampleId = state.useLoadedExampleId();
-  let deleteExample = useSetAtom(state.useAction("delete_example"));
+  let loadedExampleId = subs.useLoadedExampleId();
+  let deleteExample = useSetAtom(events.deleteExampleAtom);
   let setModal = useSetAtom(useModal());
 
   let deleteExampleModal = () => {
@@ -209,8 +212,8 @@ function DeleteExample() {
 }
 
 function BuildPromptMenu() {
-  let loadedExampleId = state.useLoadedExampleId();
-  let valuesEmpty = state.useCurrentValuesEmpty();
+  let loadedExampleId = subs.useLoadedExampleId();
+  let valuesEmpty = subs.useCurrentValuesEmpty();
   
   return (
     <span style={{fontSize: 12}}>
@@ -239,8 +242,8 @@ function copyToClipboard(currentPrompt: string) {
 }
 
 function CurrentPromptMenu() {
-  let template = state.useSelectedTemplate().template;
-  let currentValues = state.useCurrentValues();
+  let template = subs.useSelectedTemplate().template;
+  let currentValues = subs.useCurrentValues();
   let currentPrompt = compilePrompt(template, currentValues);
 
   return (
@@ -251,8 +254,8 @@ function CurrentPromptMenu() {
 }
 
 function CompletePrompt() {
-  let template = state.useSelectedTemplate().template;
-  let currentValues = state.useCurrentValues();
+  let template = subs.useSelectedTemplate().template;
+  let currentValues = subs.useCurrentValues();
   let currentPrompt = compilePrompt(template, currentValues);
   
   return (
@@ -270,8 +273,8 @@ function CompletePrompt() {
 function Header() {
   let setModalOpen = useSetAtom(setModalOpenAtom);
   let setFileHandle = useSetAtom(openFileHandleAtom);
-  let loadWorkspace = useSetAtom(state.useAction("load_workspace"));
-  let saveWorkspace = useSetAtom(state.useAction("save_workspace"));
+  let loadWorkspace = useSetAtom(events.loadWorkspaceAtom); 
+  let saveWorkspace = useSetAtom(events.saveWorkspaceAtom);
 
   const handleWorkspaceMenuActions = 
         (key: any, label: any) => onWorkspaceMenuItemClick(key, label, loadWorkspace, saveWorkspace, setFileHandle)
@@ -300,8 +303,8 @@ function Header() {
 Modal.setAppElement('#root');  // Required by react-modal
 
 function App() {
-  let template = state.useSelectedTemplate();
-  let setTemplate = useSetAtom(state.useAction("set_template"));
+  let template = subs.useSelectedTemplate();
+  let setTemplate = useSetAtom(events.setTemplateAtom);
   return (
     <div className="App">
       <Header/>

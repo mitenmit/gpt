@@ -4,9 +4,10 @@ import { Fragment, forwardRef, useImperativeHandle } from 'react';
 import ContentEditable from "react-contenteditable";
 
 import * as icons from "../components/Icons"
+import * as events from "../events"
 import {hash} from "../hash"
 import {isPv, PromptVariableAttribute} from "../promptVariable"
-import {useSelectedTemplateAttr, useCurrentValue, useAction}  from "../state"
+import {useSelectedTemplateAttr, useCurrentValue}  from "../subs"
 
 
 type ClearFieldProps = {
@@ -15,7 +16,7 @@ type ClearFieldProps = {
 
 function ClearField(props: ClearFieldProps) {
     let value = useCurrentValue(props.variable);
-    let clearValue = useSetAtom(useAction("clear_value"));
+    let clearValue = useSetAtom(events.clearValueAtom);
 
     if (value)
         return( 
@@ -77,7 +78,7 @@ type PromptDropdownMenuProps = {
 
 function PromptDropdownMenu(props: PromptDropdownMenuProps) {
     let attr = props.promptVarAttributes;
-    let setValue = useSetAtom(useAction("set_value"));
+    let setValue = useSetAtom(events.setValueAtom);
     return (
         <div className="var-menu" style={{minWidth: 100}}>
             <div className="var-menu-title" style={{background: "#EFEFEF", padding: 5}}>
@@ -102,34 +103,12 @@ function getPopupContainer(trigger: any) {
     return trigger.parentNode;
   }
 
-// function EditableVariable(props: BlockElementProps) {
-//     let attr = props.promptVarAttributes;
-//     let value = useCurrentValue(props.promptVar);
-//     let setValue = useSetAtom(useAction("set_value"));
-//     let placeholder = attr?.placeholder || "[Placeholder]";
-
-//     return (
-//         <ContentEditable
-//             key = { hash({placeholder: placeholder}).toString() }
-//             className="editable-variable"
-//             tabIndex={ props.index }
-//             html={ value || "" }
-//             data-placeholder={ placeholder }
-//             onChange={ (e) => {setValue(props.promptVar, trimSpaces(e.target.value))} }
-//             onPaste={ pastePlainText }
-//             onKeyPress={ disableNewLines }
-//             onFocus={ highlightAll }
-//             onBlur={ onContentEditableBlur }
-//         />
-//     );
-// }
-
 function BlockElement(props: BlockElementProps) {
     let component = props.promptVarAttributes?.getComponent() || "text";
 
     let attr = props.promptVarAttributes;
     let value = useCurrentValue(props.promptVar);
-    let setValue = useSetAtom(useAction("set_value"));
+    let setValue = useSetAtom(events.setValueAtom);
     let placeholder = attr?.placeholder || "[Placeholder]";
     
     switch(true) {
