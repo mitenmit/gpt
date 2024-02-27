@@ -44,6 +44,7 @@ export function lex(st: string) {
     let isInBlock    = () => currentContext[currentContext.length - 1] === "block";
     let isInVaraible = () => currentContext[currentContext.length - 1] === "variable";
     let isInBr       = () => currentContext[currentContext.length - 1] === "br";
+    let isInEscape   = () => currentContext[currentContext.length - 1] === "escape";
 
     let insertBlockCtxChar = (ch: string) => blockContext.element = blockContext.element + ch;
 
@@ -57,6 +58,8 @@ export function lex(st: string) {
     let isBlockStart = (charPos: number) => st[charPos] === "["
     let isBlockEnd = (charPos: number) => st[charPos] === "]"
 
+    let isEscapeCharStart = (charPos: number) => st[charPos] === "\\"
+
     let isVariableStart = (charPos: number) => st[charPos] === "$"
     let isVariableEnd = (charPos: number) => {
         const varDelimiterSet = new Set([" ", ",", ".", "<", ">", "?", ";", "'", ":", "\"", "|", "[", "]", "{", "}",
@@ -67,6 +70,15 @@ export function lex(st: string) {
     for(let i=0; i < st.length; i++) {
         let currentChar = st[i];
         switch (true) {
+            case isInEscape():
+                insertBlockCtxChar(currentChar);
+                popContext();
+                break;
+
+            case isEscapeCharStart(i):
+                pushContext("escape");
+                break;
+
             case isVariableStart(i):
                 insertBlockElement(blockContext, "variable");
                 pushContext("variable");
