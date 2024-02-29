@@ -3,7 +3,7 @@ import './App.css';
 import Trigger from '@rc-component/trigger';
 import copy from 'copy-to-clipboard';
 import { useSetAtom } from "jotai"
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import {Toaster, toast} from "react-hot-toast";
 import Modal from "react-modal"
 
@@ -72,7 +72,7 @@ function TemplateDelete() {
   return (
     <Fragment> 
       <PipeSeparator />
-      <a style={{color: "red"}} onClick={deleteModal}> <icons.DeleteRedIcon/> Delete </a> 
+      <a className="red" onClick={deleteModal}> <icons.DeleteRedIcon/> Delete </a> 
     </Fragment>
   );
 }
@@ -202,7 +202,7 @@ function DeleteExample() {
     loadedExampleId ? 
       <Fragment>
         <PipeSeparator/>
-        <a style = {{color: "red"}} onClick = {deleteExampleModal}>
+        <a className="red" onClick = {deleteExampleModal}>
           <icons.DeleteRedIcon /> {" Delete Example"}
         </a> 
       </Fragment>
@@ -217,7 +217,7 @@ function BuildPromptMenu() {
   
   return (
     <span style={{fontSize: 12}}>
-      [
+      {" [ "}
       <ExamplesList /> 
       <PipeSeparator/>
       { !valuesEmpty ?
@@ -226,7 +226,7 @@ function BuildPromptMenu() {
       }
       <ClearExample />
       <DeleteExample />
-      ]
+      {" ] "}
     </span>
   );
 }
@@ -271,13 +271,24 @@ function CompletePrompt() {
  */
 
 function Header() {
+  let setModal = useSetAtom(useModal());
   let setModalOpen = useSetAtom(setModalOpenAtom);
   let setFileHandle = useSetAtom(openFileHandleAtom);
   let loadWorkspace = useSetAtom(events.loadWorkspaceAtom); 
   let saveWorkspace = useSetAtom(events.saveWorkspaceAtom);
+  let resetWorkspace = useSetAtom(events.resetWorkspaceAtom);
+
+  const initResetWorkspace = () => {
+    setModal({
+      title: "Reset Workspace",
+      body: <div>After the reset all unsaved changes will be lost. <br/> Are you sure you want to reset the current workspace?</div>,
+      footerButtons: [["Reset", { className: "primary", onClick: resetWorkspace}],
+                      ["Cancel", {}]]
+    });
+  }
 
   const handleWorkspaceMenuActions = 
-        (key: any, label: any) => onWorkspaceMenuItemClick(key, label, loadWorkspace, saveWorkspace, setFileHandle)
+        (key: any, label: any) => onWorkspaceMenuItemClick( key, label, loadWorkspace, saveWorkspace, setFileHandle, initResetWorkspace )
 
   return (
     <div className='header'>
@@ -305,6 +316,12 @@ Modal.setAppElement('#root');  // Required by react-modal
 function App() {
   let template = subs.useSelectedTemplate();
   let setTemplate = useSetAtom(events.setTemplateAtom);
+  let readState = useSetAtom(events.readStateLocalStorageAtom);
+
+  useEffect(() => {
+    readState();
+  }, []);
+
   return (
     <div className="App">
       <Header/>
