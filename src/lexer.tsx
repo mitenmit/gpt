@@ -1,4 +1,4 @@
-import * as pv from "./promptVariable"
+import * as pv from "./components/promptVariable"
 
 const emptyBlockContext = () => {return {elementType: null,
                                          element: "",
