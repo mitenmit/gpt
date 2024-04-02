@@ -6,7 +6,7 @@ import ContentEditable from "react-contenteditable";
 import * as icons from "../components/Icons"
 import * as events from "../events"
 import {hash} from "../hash"
-import {isPv, PromptVariableAttribute} from "../promptVariable"
+import {isPv, PromptVariableAttribute} from "./promptVariable"
 import {useSelectedTemplateAttr, useCurrentValue}  from "../subs"
 
 

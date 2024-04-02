@@ -1,8 +1,8 @@
 import Modal from "react-modal"
-import { CaretDown, ClearIcon, SourceCodeIcon, SettignsIcon, QuestionCircleIcon, Holder, Plus, DeleteRedIcon } from "../components/Icons"
+import { CaretDown, ClearIcon, SourceCodeIcon, SettingsIcon, QuestionCircleIcon, Holder, Plus, DeleteRedIcon } from "../components/Icons"
 import { List } from "../components/List"
 import { PromptBuilder } from "../components/PromptBuilder"
-import { PromptVariableAttribute, isPv, recordToPvAttr } from "../promptVariable"
+import { PromptVariableAttribute, isPv, recordToPvAttr } from "./promptVariable"
 import { lex } from "../lexer"
 import * as state from "../state";
 import * as subs from "../subs";
@@ -146,7 +146,7 @@ function Header() {
                         <button tabIndex={1} className={ activeTab === 0 ? "selected" : ""} onClick={ (e) => {e.currentTarget.blur(); setActiveTab(0); }}><SourceCodeIcon/> Source</button>
                     </li>
                     <li className="tab-item">
-                        <button tabIndex={1} className={activeTab === 1 ? "selected" : ""} onClick={ (e) => {e.currentTarget.blur(); setActiveTab(1)}}><SettignsIcon/> Variable Settings</button>
+                        <button tabIndex={1} className={activeTab === 1 ? "selected" : ""} onClick={ (e) => {e.currentTarget.blur(); setActiveTab(1)}}><SettingsIcon/> Variable Settings</button>
                     </li>
                 </ul>
             </div>

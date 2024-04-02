@@ -1,4 +1,4 @@
-import {IPromptVariableAttribute} from "./types"
+import {IPromptVariableAttribute} from "../types"
 
 export type NullableString = string | null;
 
