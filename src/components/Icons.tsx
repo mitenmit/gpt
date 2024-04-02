@@ -175,7 +175,7 @@ export const SourceCodeIcon = () => {
     );
 }
 
-export const SettignsIcon = () => {
+export const SettingsIcon = () => {
     return (
         <span className="icon" role="img" aria-label="setting">
             <svg viewBox="64 64 896 896" focusable="false" data-icon="setting" width="1em" height="1em" fill="currentColor" aria-hidden="true">
@@ -187,8 +187,3 @@ export const SettignsIcon = () => {
         </span>        
     );
 }
-
-
-
-
-
