@@ -311,6 +311,43 @@ function Header() {
   );
 }
 
+function Footer() {
+  return (
+    <div className="footer">
+      <div className="container">
+        <h2 id="the-formula">The formula</h2>
+        <p>
+          A formula for designing prompts for large language model (LLM)-based
+          generative AIs is: {" "}
+        </p>
+        <p>
+          <em>
+            “
+            <strong>persona + context + task + format + exemplar + tone</strong>
+            ”
+          </em>
+        </p>
+        <p>
+          This formula gives us an easy-to-follow structure when designing our
+          prompts. Here we can break the formula down to three parts:  {" "}
+        </p>
+        <p>
+          <strong>Mandatory to have: </strong>Task{" "}
+        </p>
+        <p>
+          <strong>Important to have: </strong>Context &amp; Exemplar{" "}
+        </p>
+        <p>
+          <strong>Nice to have: </strong>Persona, Format, &amp; Tone
+        </p>
+        <p>
+          The order of importance: Task &gt; Context &gt; Exemplar &gt; Persona &gt; Format &gt; Tone.
+        </p>
+      </div>
+    </div>
+  ); 
+}
+
 Modal.setAppElement('#root');  // Required by react-modal
 
 function App() {
@@ -332,6 +369,7 @@ function App() {
         <h2>Prompt: <CurrentPromptMenu /></h2>
         <CompletePrompt />
       </div>
+      <Footer />
       <TemplateBuilder onSubmit = { setTemplate }/>
       <DialogComponent />
       <Toaster position="bottom-center"/>

@@ -1,80 +1,47 @@
 import {ITemplate} from "./types"
-import {pv, pvAttr} from "./promptVariable"
+import {pv, pvAttr} from "./components/promptVariable"
 
-const ROLES: Array<string> = [
-    "Expert Accountant",
-    "Skilled Software Developer",
-    "Seasoned Teacher",
-    "Accomplished Sales Representative",
-    "Competent Project Manager",
-    "Proficient Layer",
-    "Qualified Engineer",
-    "Experienced Architect",
-    "Competent Marketing Manager",
-    "Knowledgeable Financial Analyst",
-    "Creative Graphic Designer",
-    "Seasoned Human Resources Manager",
-    "Trusted Consultant",
-    "Skilled Doctor",
-    "Licensed Psychologist",
-    "Dedicated Researcher",
-    "Analytical Data Analyst",
-    "Astute Economist",
-    "Journalistic Reporter",
-    "Professional Pharmacist",
-    "Compassionate Social Worker",
-    "Tech-savvy IT Specialist",
-    "Insightful Business Analyst",
-    "Seasoned Operations Manager",
-    "Strategic Event Planner",
-    "Expert Real Estate Agent",
-    "Seasoned Investment Banker",
-    "Proficient Web Developer",
-    "Certified Fitness Trainer",
-    "Professional Executive Coach",
-    "Agile Scrum Master",
-    "Cyber Security Analyst",
-    "User Experience (UX) Researcher",
-    "Blockchain Developer",
-    "Artificial Intelligence (AI) Engineer",
-    "Environmental Consultant",
-    "Data Privacy Officer",
-    "Virtual Reality (VR) Developer",
-    "Ethical Hacker"
+const PERSONA: Array<string> = [
+    "an Immunologist and expert in vaccination",
+];
+
+const CONTEXT: Array<string> = [
+    "need a summary explaining how a vaccine work to protect from infectious diseases for third-year university students majoring in biology",
 ];
 
 const TASKS: Array<string> = [
-    "Adapt",
-    "Analyze",
-    "Automate",
-    "Calculate",
-    "Classify",
-    "Collaborate",
-    "Convert",
-    "Customize",
-    "Debug",
-    "Design",
-    "Detect",
-    "Diagnose",
-    "Discover",
-    "Enhance",
-    "Facilitate",
-    "Filter",
-    "Generate",
-    "Identify",
-    "Improve",
-    "Optimize",
-    "Personalize",
-    "Predict",
-    "Rank",
-    "Recognise",
-    "Recommend",
-    "Simulate",
-    "Streamline",
-    "Summarize",
-    "Track",
-    "Translate",
-    "Validate"
+    "write a 200 word summary outlining the key principles of vaccine design and mains features of the expected immune response following vaccination",
+    "Adapt...",
+    "Analyze...",
+    "Automate...",
+    "Calculate...",
+    "Classify...",
+    "Collaborate...",
+    "Convert...",
+    "Customize...",
+    "Debug...",
+    "Design...",
+    "Detect...",
+    "Diagnose...",
+    "Discover...",
+    "Enhance...",
+    "Facilitate...",
+    "Filter...",
+    "Generate...",
+    "Identify...",
+    "Improve...",
+    "Optimize...",
+    "Personalize...",
+    "Predict...",
+    "Rank...",
+    "Recognise...",
+    "Recommend...",
+    "Simulate...",
+    "Streamline...",
+    "Summarize...",
+    "Track...",
+    "Translate...",
+    "Validate..."
 ];
 
 const FORMATS: Array<string> = [
@@ -92,47 +59,44 @@ export const PROMPT_TEMPLATE: ITemplate = {
     name: "Main Template",
     id: crypto.randomUUID(),
     promptVariableAttributes: {
-        role: pvAttr(null, "Select a role:", "[Specify a role]",  ROLES, null),
-        needs: pvAttr(null, "What do you need?", "[What do you need?]", null, null),
-        task: pvAttr(null, "What is the task?", "[Enter a task]", TASKS,  null),
-        details: pvAttr(null, "Details:", "[Enter details]", null, null),
-        exclusion: pvAttr(null, "Exclusions:", "[Enter exclusion]", null, null),
-        format: pvAttr(null, "Select format:", "[Select a format]", FORMATS, null),
-        example: pvAttr(null, "Example:", "[Enter an example]", null, null)
+        persona: pvAttr(null, "Select a persona:", "[Specify a persona (NICE TO HAVE)]", PERSONA, null),
+        context: pvAttr(null, "Ask: what's the background? What the success should look like? etc", "[Specify the context you are facing (IMPORTANT TO HAVE)]", CONTEXT, null),
+        task: pvAttr(null, "What is the task?", "[Enter a task with details (MANDATORY)]", TASKS,  null),
+        format: pvAttr(null, "Select sample format:", "[Enter a format (NICE TO HAVE)]", FORMATS, null),
+        tone: pvAttr(null, "Tones:", "[Enter a tone of voice (NICE TO HAVE)]", null, null),
+        example: pvAttr(null, "Example:", "[Enter an example output or example structure (IMPORTANT TO HAVE)]", null, null)
     },
-    sourceTemplate: "[Act like a $ROLE, <br>][I need a $NEEDS, <br>][you will $TASK, <br>][in the process, you should $DETAILS, <br>][please $EXCLUSION, <br>][input the final result in a $FORMAT, <br>][here is an example: $EXAMPLE]",
+    sourceTemplate: "[You are $PERSONA. <br>][I $CONTEXT. <br>][You will $TASK. <br>][Output the final result in a $FORMAT. <br>][Please ensure $TONE. <br>][Here is an example: $EXAMPLE.]",
     template: [
-        ["Act like a ", pv("role"), ",", "<br/>"],
-        ["I need a ", pv("needs"), ", ", "<br/>"],
-        ["you will ", pv("task"), ", ", "<br/>"],
-        [" in the process, you should ", pv("details"), ", ", "<br/>"],
-        ["please ", pv("exclusion"), ", ", "<br/>"],
-        ["input the final result in a ", pv("format"), ", ", "<br/>"],
-        ["here is an example: ", pv("example")]
+        ["You are ", pv("persona"), ". ", "<br/>"],
+        ["I ", pv("context"), ". ", "<br/>"],
+        ["You will ", pv("task"), ". ", "<br/>"],
+        ["Output the final result in a ", pv("format"), ". ", "<br/>"],
+        ["Please ensure ", pv("tone"), ". ", "<br/>"],
+        ["Here is an example: \n", pv("example")]
     ],
     examples: [
         {
             name: "Full Example",
             id: crypto.randomUUID(),
             values: {
-                role: "SEO Professional Writer",
-                needs: "optimized blog post",
-                task: "research keywords and incorporate them naturally into the content",
-                details: "focus on readability, relevance and proper keyword placement",
-                exclusion: "avoid keyword stuffing or over-optimisation",
+                persona: "an Immunologist and expert in vaccination",
+                context: "need a summary explaining how a vaccine work to protect from infectious diseases for third-year university students majoring in biology",
+                task: "write a 200 word summary outlining the key principles of vaccine design and mains features of the expected immune response following vaccination",
                 format: "well structured format",
-                example: "title \"Top 10 Tips for Effective SEO Writing: Boost Your Content's Visibility\""
+                tone: "the summary should be written for a scientific audience",
+                example: "1. Introduction to the immune system and its role in protecting the body from infectious diseases. 2. Explanation of how vaccines work to stimulate the immune system and protect against infectious diseases. 3. Description of the main features of the immune response following vaccination. 4. Conclusion summarizing the key points of the summary.",
             }
         },
-        {
-            name: "Short Example",
-            id: crypto.randomUUID(),
-            values: {
-                role: "SEO Professional Writer",
-                task: "research keywords and incorporate them naturally into the content",
-                details: "focus on readability, relevance and proper keyword placement",
-                format: "well structured format"
-            }
-        }
+        // {
+        //     name: "Short Example",
+        //     id: crypto.randomUUID(),
+        //     values: {
+        //         role: "SEO Professional Writer",
+        //         task: "research keywords and incorporate them naturally into the content",
+        //         details: "focus on readability, relevance and proper keyword placement",
+        //         format: "well structured format"
+        //     }
+        // }
     ]
 };
