@@ -1,5 +1,5 @@
 import * as consts from "./constants"
-import { isPv, recordToPvAttr } from "./promptVariable"
+import { isPv, recordToPvAttr } from "./components/promptVariable"
 import {AppState, Templates, TemplateIndex, TemplateId, LoadedExampleId, CurrentValues} from "./types"
 
 import { atom, useAtomValue, useSetAtom } from "jotai"
