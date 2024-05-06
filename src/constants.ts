@@ -89,49 +89,49 @@ const FORMATS: Array<string> = [
 ];
 
 export const PROMPT_TEMPLATE: ITemplate = {
-    name: "Main Template",
+    name: "主模板",
     id: crypto.randomUUID(),
     promptVariableAttributes: {
-        role: pvAttr(null, "Select a role:", "[Specify a role]",  ROLES, null),
-        needs: pvAttr(null, "What do you need?", "[What do you need?]", null, null),
-        task: pvAttr(null, "What is the task?", "[Enter a task]", TASKS,  null),
-        details: pvAttr(null, "Details:", "[Enter details]", null, null),
-        exclusion: pvAttr(null, "Exclusions:", "[Enter exclusion]", null, null),
-        format: pvAttr(null, "Select format:", "[Select a format]", FORMATS, null),
-        example: pvAttr(null, "Example:", "[Enter an example]", null, null)
+        role: pvAttr(null, "选择一个角色:", "[指定一个角色]",  ROLES, null),
+	needs: pvAttr(null, "你需要什么？", "[你需要什么？]", null, null),
+	task: pvAttr(null, "任务是什么？", "[输入一个任务]", TASKS,  null),
+	details: pvAttr(null, "详情:", "[输入详情]", null, null),
+	exclusion: pvAttr(null, "排除项:", "[输入排除项]", null, null),
+	format: pvAttr(null, "选择格式:", "[选择一个格式]", FORMATS, null),
+	example: pvAttr(null, "示例:", "[输入一个示例]", null, null)
     },
-    sourceTemplate: "[Act like a $ROLE, <br>][I need a $NEEDS, <br>][you will $TASK, <br>][in the process, you should $DETAILS, <br>][please $EXCLUSION, <br>][input the final result in a $FORMAT, <br>][here is an example: $EXAMPLE]",
+    sourceTemplate: "[扮演一个 $ROLE, <br>][我需要一个 $NEEDS, <br>][你将会 $TASK, <br>][在这个过程中, 你应该 $DETAILS, <br>][请 $EXCLUSION, <br>][输入的信息最终以 $FORMAT, <br>][这里是一个示例: $EXAMPLE]",
     template: [
-        ["Act like a ", pv("role"), ",", "<br/>"],
-        ["I need a ", pv("needs"), ", ", "<br/>"],
-        ["you will ", pv("task"), ", ", "<br/>"],
-        [" in the process, you should ", pv("details"), ", ", "<br/>"],
-        ["please ", pv("exclusion"), ", ", "<br/>"],
-        ["input the final result in a ", pv("format"), ", ", "<br/>"],
-        ["here is an example: ", pv("example")]
+        ["扮演一个 ", pv("role"), ",", "<br/>"],
+        ["我需要一个 ", pv("needs"), ", ", "<br/>"],
+        ["你将会 ", pv("task"), ", ", "<br/>"],
+        [" 在这个过程中, 你应该 ", pv("details"), ", ", "<br/>"],
+        ["请 ", pv("exclusion"), ", ", "<br/>"],
+        ["输入的信息最终以 ", pv("format"), ", ", "<br/>"],
+        ["这里是一个示例: ", pv("example")]
     ],
     examples: [
         {
-            name: "Full Example",
+            name: "完整示例",
             id: crypto.randomUUID(),
             values: {
-                role: "SEO Professional Writer",
-                needs: "optimized blog post",
-                task: "research keywords and incorporate them naturally into the content",
-                details: "focus on readability, relevance and proper keyword placement",
-                exclusion: "avoid keyword stuffing or over-optimisation",
-                format: "well structured format",
-                example: "title \"Top 10 Tips for Effective SEO Writing: Boost Your Content's Visibility\""
+                role: "SEO 专业撰稿人",
+		needs: "优化的博客文章",
+		task: "研究关键词并自然地将它们融入内容中",
+		details: "侧重于易读性、相关性和适当的关键词放置",
+		exclusion: "避免关键词堆积或过度优化",
+		format: "良好的结构化格式",
+		example: "标题\"SEO 写作的十大有效技巧：提升您内容的曝光度\""
             }
         },
         {
-            name: "Short Example",
+            name: "简短示例",
             id: crypto.randomUUID(),
             values: {
-                role: "SEO Professional Writer",
-                task: "research keywords and incorporate them naturally into the content",
-                details: "focus on readability, relevance and proper keyword placement",
-                format: "well structured format"
+                role: "SEO 专业撰稿人",
+		task: "研究关键词并自然地将它们融入内容中",
+		details: "侧重于易读性、相关性和适当的关键词放置",
+		format: "良好的结构化格式"
             }
         }
     ]
